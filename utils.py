@@ -2,22 +2,12 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
 
+mama = 4
 #klassene inneholder infoen: sepal length, sepal width, petal length, petal width
 def get_set(size, file):
     cols = ['sepal_l', 'sepal_w', 'petal_l', 'petal_w']
     df = pd.read_csv(file,nrows=size, names=cols)
-   # df['iris_type'] = type_class
     return df
-    df.to_csv(name_new, columns=cols, index=False)
-
-"""def check_label_data(file):
-    df = pd.read_csv(file)
-    df['iris_type'] = df['iris_type'].str.lower().map({
-    'setosa': 0,
-    'versicolor': 1,
-    'virginica': 2
-    })
-    return df"""
 
 def sigmoid(z):
     return 1/(1 + np.exp(-z))
@@ -37,7 +27,6 @@ def MSE_loss(g, t):
     error = g - t
     loss = 0.5 * np.sum(error**2)
     return loss
-    
 
 def MSE_gradient(g, t, x, num_features, num_classes):
     grad = np.zeros((num_classes, num_features + 1))
@@ -51,7 +40,6 @@ def MSE_gradient(g, t, x, num_features, num_classes):
         delta = error * sigmoid_derivative
         grad += delta @ np.transpose(x_k)
     return grad
-
 
 def train_classifier(training_data, W, training_size, iterations, alpha, num_classes):
     target1 = np.tile([1,0,0], training_size)
@@ -86,3 +74,7 @@ def confusion_matrix(W, data, batch_size, num_classes):
     
     return matrix
 
+def error_rate(cm):
+    correct = np.trace(cm)
+    total = np.sum(cm)
+    return 1 - (correct / total)     

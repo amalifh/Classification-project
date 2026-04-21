@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.datasets import load_iris
 import utils
 
 #Constant
@@ -24,6 +25,7 @@ X_train = df.iloc[:, :4].to_numpy(dtype=float)
 df = pd.concat([df1[-TESTING_SIZE:], df2[-TESTING_SIZE:], df3[-TESTING_SIZE:]], ignore_index=True)
 X_test = df.iloc[:, :4].to_numpy(dtype=float)
 
+iris = load_iris()
 
 def main():
     #Task 1 - Part one
@@ -33,7 +35,21 @@ def main():
 #    print(loss[-20:])
     cm_training = utils.confusion_matrix(W, X_train, TRAINING_SIZE, N_CLASSES)
     cm_testing = utils.confusion_matrix(W, X_test, TESTING_SIZE, N_CLASSES)
-    print(cm_training)
-    print(cm_testing)
+    error_rate_training = utils.error_rate(cm_training)
+    error_rate_testing = utils.error_rate(cm_testing)
+    print(f'Error rate training: {error_rate_training}')
+    print(f'Error rate testing: {error_rate_testing}')
+    
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm_training, display_labels=iris.target_names)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.title('Confusion Matrix for training')
+    plt.show()
+
+    disp_testing = ConfusionMatrixDisplay(confusion_matrix=cm_testing, display_labels=iris.target_names)
+    disp_testing.plot(cmap=plt.cm.Greens)
+    plt.title('Confusion Matrix for testing')
+    plt.show()
+
+
 if __name__ == '__main__':
     main()  
