@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.datasets import load_iris
-import utils
+import utils_part_1 as utils
 
-#Constant
+#CONSTANTS
 N_CLASSES = 3
 N_FEATURES = 4
 TRAINING_SIZE = 30
@@ -18,12 +18,11 @@ df1 = utils.get_set(TRAINING_SIZE + TESTING_SIZE, "class_1")
 df2 = utils.get_set(TRAINING_SIZE + TESTING_SIZE, "class_2")
 df3 = utils.get_set(TRAINING_SIZE + TESTING_SIZE, "class_3")
 
-#training
-df = pd.concat([df1[:TRAINING_SIZE], df2[:TRAINING_SIZE], df3[:TRAINING_SIZE]], ignore_index=True)
-X_train = df.iloc[:, :4].to_numpy(dtype=float)
-#testing
-df = pd.concat([df1[-TESTING_SIZE:], df2[-TESTING_SIZE:], df3[-TESTING_SIZE:]], ignore_index=True)
-X_test = df.iloc[:, :4].to_numpy(dtype=float)
+df_train = pd.concat([df1[:TRAINING_SIZE], df2[:TRAINING_SIZE], df3[:TRAINING_SIZE]], ignore_index=True)
+X_train = df_train.iloc[:, :4].to_numpy(dtype=float)
+
+df_test = pd.concat([df1[-TESTING_SIZE:], df2[-TESTING_SIZE:], df3[-TESTING_SIZE:]], ignore_index=True)
+X_test = df_test.iloc[:, :4].to_numpy(dtype=float)
 
 iris = load_iris()
 
@@ -39,6 +38,14 @@ def main():
     error_rate_testing = utils.error_rate(cm_testing)
     print(f'Error rate training: {error_rate_training}')
     print(f'Error rate testing: {error_rate_testing}')
+    
+    import matplotlib.pyplot as plt
+
+    plt.plot(loss)
+    plt.xlabel("Iteration")
+    plt.ylabel("MSE Loss")
+    plt.title("Training Convergence")
+    plt.show()
     
     disp = ConfusionMatrixDisplay(confusion_matrix=cm_training, display_labels=iris.target_names)
     disp.plot(cmap=plt.cm.Blues)

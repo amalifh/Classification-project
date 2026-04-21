@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
 
-mama = 4
-#klassene inneholder infoen: sepal length, sepal width, petal length, petal width
+
 def get_set(size, file):
     cols = ['sepal_l', 'sepal_w', 'petal_l', 'petal_w']
     df = pd.read_csv(file,nrows=size, names=cols)
@@ -12,9 +11,6 @@ def get_set(size, file):
 def sigmoid(z):
     return 1/(1 + np.exp(-z))
 
-#vi skal trene hele klassen samtidig, lager da en df med alle 90 trainings
-#the W_matrix will contain the bias
-#her skal ikke x inneholde target value
 def confidence_vector(W_matrix, x_features, batch_size, num_classes):
     g_all = np.zeros(((batch_size * num_classes), num_classes))
     for i, x in enumerate(x_features):
