@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import mean_squared_error
 
 
 def get_set(size, file):
@@ -23,8 +22,6 @@ def MSE_loss(g, t):
     error = g - t
     loss = 0.5 * np.sum(error**2)
     return loss
-
-
 
 def MSE_gradient(g, t, x, num_features, num_classes):
     grad = np.zeros((num_classes, num_features + 1))

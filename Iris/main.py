@@ -44,18 +44,6 @@ def main():
         error_rate_training = utils.error_rate(cm_training)
         error_rate_testing = utils.error_rate(cm_testing)    
 
-        print(f'Alpha {alpha}')
-        print(f'Error rate training {error_rate_training}')
-        print(f'Error rate testing {error_rate_testing}')
-    for alpha, loss in all_losses.items():
-        plt.plot(loss, label=f'alpha={alpha}')
-        
-    plt.xlabel('Iterations')
-    plt.ylabel('Loss')
-    plt.title('Loss over iterations')
-    plt.legend()
-#    plt.savefig('MSE_different_alphas', dpi = 500)
-
     #Getting confusion matrix and error rate for chosen step factor
     W = np.zeros((N_CLASSES, N_FEATURES + 1))
     W, loss = utils.train_classifier(X_train, W, TRAINING_SIZE, ITERATIONS, STEP_FACTOR, N_CLASSES)
@@ -67,25 +55,7 @@ def main():
     print(f'Error rate training {error_rate_training}')
     print(f'Error rate testing {error_rate_testing}')
 
-#    disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_training, display_labels=iris.target_names)
-#    disp_training.plot(cmap=plt.cm.Blues)
-#    plt.title('Confusion Matrix training data \n Error rate: 3.33%')
-#    plt.savefig("Iris/figures/CM_training", dpi = 500)
-
-#    disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_testing, display_labels=iris.target_names)
-#    disp_training.plot(cmap=plt.cm.Greens)
-#    plt.title('Confusion Matrix testing data\n Error rate: 5.00%')
-#    plt.savefig("Iris/figures/CM_testing", dpi = 500)
-
 #-----------------------TASK TWO-----------------------
-    features = [
-        "Sepal Length",
-        "Sepal Width",
-        "Petal Length",
-        "Petal Width"
-    ]
-
-
     #Removing one feature, sepal length
     X_3_train= utils.remove_feature(X_train, 0)
     X_3_test = utils.remove_feature(X_test, 0)
@@ -107,33 +77,12 @@ def main():
     error_rate_3_train = utils.error_rate(cm_3_train)
     error_rate_3_test = utils.error_rate(cm_3_test)
 
-    #disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_3_train, display_labels=iris.target_names)
-    #disp_training.plot(cmap=plt.cm.Blues)
-    #plt.title('CM training without sepal length')
-    #plt.savefig("Iris/figures/CM_3_train", dpi = 500)
-
-    #disp_testing = ConfusionMatrixDisplay(confusion_matrix=cm_3_test, display_labels=iris.target_names)
-    #disp_testing.plot(cmap=plt.cm.Greens)
-    #plt.title('CM testing without sepal length')
-    #plt.savefig("Iris/figures/CM_3_test", dpi = 500)
-
     W_2 = np.zeros((N_CLASSES, N_FEATURES-1))
     W_2feat, loss_2 = utils.train_classifier(X_2_train, W_2, TRAINING_SIZE, ITERATIONS, STEP_FACTOR, N_CLASSES)
     cm_2_train = utils.confusion_matrix(W_2feat, X_2_train, TRAINING_SIZE, N_CLASSES)
     cm_2_test = utils.confusion_matrix(W_2feat, X_2_test, TESTING_SIZE, N_CLASSES)
     error_rate_2_train = utils.error_rate(cm_2_train)
     error_rate_2_test = utils.error_rate(cm_2_test)
-
-    #disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_2_train, display_labels=iris.target_names)
-    #disp_training.plot(cmap=plt.cm.Blues)
-    #plt.title('CM training without sepal length and width')
-    #plt.savefig("Iris/figures/CM_2_train", dpi = 500)
-
-    #disp_testing = ConfusionMatrixDisplay(confusion_matrix=cm_2_test, display_labels=iris.target_names)
-    #disp_testing.plot(cmap=plt.cm.Greens)
-    #plt.title('CM testing without sepal length and width')
-    #plt.savefig("Iris/figures/CM_2_test", dpi = 500)
-
 
     W_1 = np.zeros((N_CLASSES, N_FEATURES-2))
     W_1, loss_1 = utils.train_classifier(X_1_train, W_1, TRAINING_SIZE, ITERATIONS, STEP_FACTOR, N_CLASSES)
@@ -142,16 +91,6 @@ def main():
     error_rate_1_train = utils.error_rate(cm_1_train)
     error_rate_1_test = utils.error_rate(cm_1_test)
 
-    #disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_1_train, display_labels=iris.target_names)
-    #disp_training.plot(cmap=plt.cm.Blues)
-    #plt.title('CM training without sepal features and petal length')
-    #plt.savefig("Iris/figures/CM_1_train", dpi = 500)
-
-    #disp_testing = ConfusionMatrixDisplay(confusion_matrix=cm_1_test, display_labels=iris.target_names)
-    #disp_testing.plot(cmap=plt.cm.Greens)
-    #plt.title('CM testing without sepal features and petal length')
-    #plt.savefig("Iris/figures/CM_1_test", dpi = 500)
-    
     print(f'Error rate training, all: {error_rate_training}')
     print(f'Error rate testing, all: {error_rate_testing}')
 
@@ -164,11 +103,19 @@ def main():
     print(f'Error rate training, 1 feature: {error_rate_1_train}')
     print(f'Error rate testing, 1 feature: {error_rate_1_test}')
 
-    plt.plot(loss_1)
-    plt.xlabel("Iteration")
-    plt.ylabel("MSE")
-    plt.title("Training Convergence without sepal features and petal length")
-    plt.savefig("Iris/figures/loss_1", dpi = 500)
+    plt.figure()
+
+    plt.plot(loss_3, label='3 features')
+    plt.plot(loss_2, label='2 features')
+    plt.plot(loss_1, label='1 feature')
+    plt.plot(loss, label = 'All features' )
+
+    plt.xlabel('Iterations')
+    plt.ylabel('Loss')
+    plt.title('Loss over iterations for different feature counts')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('Loss_comparison', dpi = 500)
 
 if __name__ == '__main__':
     main()  
