@@ -24,6 +24,8 @@ def MSE_loss(g, t):
     loss = 0.5 * np.sum(error**2)
     return loss
 
+
+
 def MSE_gradient(g, t, x, num_features, num_classes):
     grad = np.zeros((num_classes, num_features + 1))
 
@@ -54,7 +56,7 @@ def train_classifier(training_data, W, training_size, iterations, alpha, num_cla
         loss[i] = MSE_loss(g_vector, target)
         W = W - alpha * gradient
 
-        print(f"Iteration: {i+1}")
+      #  print(f"Iteration: {i+1}")
 
     return W, loss
 

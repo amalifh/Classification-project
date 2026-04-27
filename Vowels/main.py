@@ -63,7 +63,7 @@ def main():
             #make again for diag cov
 
     error = utils.error_rate(cm)
-    print(f'Error rate: {error}')
+    print(f'Error rate normal: {error}')
 
     diag_covariances ={}
     for v in covariances:
@@ -91,7 +91,7 @@ def main():
 
             cm_diag[i,j] += 1
 
-    error_diag = 1 - np.trace(cm_diag)/np.sum(cm_diag)
+    error_diag = utils.error_rate(cm_diag)
     print(f'Error rate digonal covariance matrix: {error_diag}')
 
 #---------------------TASK 2------------------
@@ -115,13 +115,25 @@ def main():
 
             cm_2[i,j] += 1
             cm_3[i,k] += 1
-    
-    print(utils.error_rate(cm_2))
+    fig, ax = plt.subplots()
+    ax.axis('off')
+
+    table = ax.table(
+        cellText=mean_matrix.round(1).values,
+        rowLabels=mean_matrix.index,
+        colLabels=mean_matrix.columns,
+        loc='center'
+    )
+
+  #  plt.show()
+    print(f'Error rate no mixstures {utils.error_rate(cm)}')
+    print(f'Error rate 2 mixstures {utils.error_rate(cm_2)}')
+    print(f'Error rate 3 mixstures {utils.error_rate(cm_3)}')
     print(utils.error_rate(cm_3))
     disp_training = ConfusionMatrixDisplay(confusion_matrix=cm_3, display_labels=classes)
     disp_training.plot(cmap=plt.cm.Reds)
-    plt.title('Confusion Matrix')
-    plt.savefig("Vowels/figures/CM_3", dpi = 500)
+   # plt.title('Confusion Matrix')
+    #plt.savefig("Vowels/figures/CM_3", dpi = 500)
 
 
 if __name__ == "__main__":
