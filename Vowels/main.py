@@ -80,7 +80,7 @@ def main():
         means_full,
         cov_full
     )
-
+    
     means_diag, cov_diag = utils.train_single_gaussian(
         train_data,
         CLASSES,
@@ -149,6 +149,7 @@ def main():
         f"CM GMM 3 mixtures\nError rate {utils.error_rate(cm_gmm_3) * 100:.2f}%",
         "Vowels/figures/CM_gmm_3.png"
     )
+
 
 
 if __name__ == "__main__":
